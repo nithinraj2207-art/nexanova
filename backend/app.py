@@ -41,8 +41,12 @@ from backend.explanation import generate_explanation, generate_recommended_actio
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
-DATASET_DIR = os.path.join(BASE_DIR, "dataset")
-REPORTS_DIR = os.path.join(BASE_DIR, "reports")
+if os.environ.get("VERCEL"):
+    DATASET_DIR = "/tmp/dataset"
+    REPORTS_DIR = "/tmp/reports"
+else:
+    DATASET_DIR = os.path.join(BASE_DIR, "dataset")
+    REPORTS_DIR = os.path.join(BASE_DIR, "reports")
 
 app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
 

@@ -9,8 +9,12 @@ import os
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 
-DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database")
-DB_PATH = os.path.join(DB_DIR, "cyberdna.db")
+if os.environ.get("VERCEL"):
+    DB_DIR = "/tmp"
+    DB_PATH = "/tmp/cyberdna.db"
+else:
+    DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database")
+    DB_PATH = os.path.join(DB_DIR, "cyberdna.db")
 
 
 def get_db_connection():

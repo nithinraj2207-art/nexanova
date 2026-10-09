@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERDNA | AI-Powered Predictive Cyberattack Early-Warning System</title>
+  <meta name="description" content="CyberDNA - Defensive cybersecurity web application for sequence behavioral analysis, attack stage detection, and next-stage prediction.">
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-soc-theme">
+  <!-- Top Navigation Bar -->
+  <header class="top-navbar" id="top-navbar">
+    <div class="nav-brand">
+      <div class="brand-icon-wrapper">
+        <i class="fa-solid fa-dna brand-icon"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">CYBER<span class="highlight-cyan">DNA</span></span>
+        <span class="brand-subtitle">AI Predictive Early-Warning</span>
+      </div>
+    </div>
+
+    <!-- Quick Action Bar in Header -->
+    <div class="header-actions">
+      <!-- Active Telemetry Status Badge -->
+      <div class="system-status-badge">
+        <i class="fa-solid fa-satellite-dish highlight-cyan"></i>
+        <span class="status-label" style="margin-left: 6px;">REAL-TIME SCAN ENGINE</span>
+      </div>
+
+      <!-- Status Indicator -->
+      <div class="system-status-badge" id="system-status-indicator">
+        <span class="status-dot pulsating"></span>
+        <span class="status-label">DEFENSIVE SOC ACTIVE</span>
+      </div>
+
+      <!-- Active Session ID Tag -->
+      <div class="session-chip" id="current-session-chip">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span id="header-analysis-id">SESSION: READY</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="soc-sidebar" id="soc-sidebar">
+      <div class="sidebar-tagline">
+        <p>"Detect the Pattern. Predict the Attack. Stop It Early."</p>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-target="section-overview" id="nav-btn-overview">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Overview</span>
+        </button>
+        <button class="nav-item" data-target="section-analysis" id="nav-btn-analysis">
+          <i class="fa-solid fa-tower-broadcast"></i>
+          <span>Security Telemetry</span>
+        </button>
+        <button class="nav-item" data-target="section-patterns" id="nav-btn-patterns">
+          <i class="fa-solid fa-fingerprint"></i>
+          <span>Attack Patterns</span>
+        </button>
+        <button class="nav-item" data-target="section-predictions" id="nav-btn-predictions">
+          <i class="fa-solid fa-crystal-ball"></i>
+          <span>Predictions</span>
+        </button>
+        <button class="nav-item" data-target="section-alerts" id="nav-btn-alerts">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Alerts</span>
+          <span class="badge badge-alert-count" id="sidebar-alert-badge">0</span>
+        </button>
+        <button class="nav-item" data-target="section-entities" id="nav-btn-entities">
+          <i class="fa-solid fa-users-gear"></i>
+          <span>Users & Devices</span>
+        </button>
+        <button class="nav-item" data-target="section-reports" id="nav-btn-reports">
+          <i class="fa-solid fa-file-shield"></i>
+          <span>Reports</span>
+        </button>
+        <button class="nav-item" data-target="section-history" id="nav-btn-history">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Analysis History</span>
+        </button>
+        <button class="nav-item" data-target="section-settings" id="nav-btn-settings">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="soc-telemetry-badge">
+          <i class="fa-solid fa-server"></i>
+          <div class="soc-telemetry-text">
+            <span class="telemetry-title">MITRE ATT&CK Matrix</span>
+            <span class="telemetry-sub">Sequential Markov AI v1.0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Stage -->
+    <main class="soc-stage" id="soc-stage">
+      
+      <!-- Notification Banner / Toast Container -->
+      <div id="toast-container" class="toast-container"></div>
+
+      <!-- ==============================================
+           1. OVERVIEW SECTION
+           ============================================== -->
+      <section id="section-overview" class="content-section active">
+        <!-- Hero Header -->
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Defensive SOC Overview</h1>
+            <p class="page-subtitle">Real-time telemetry, threat sequence monitoring, and predictive analytics.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn btn-sm btn-outline" id="btn-refresh-overview">
+              <i class="fa-solid fa-rotate-right"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Target Input & Vulnerability Scanner Card -->
+        <div class="card mb-24 target-scanner-card" id="target-scanner-card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-radar highlight-cyan"></i>
+              <span>Target Vulnerability Scanner</span>
+            </div>
+            <span class="card-badge" id="scanner-status-tag">Ready to Scan</span>
+          </div>
+          <div class="card-body">
+            <form id="target-scan-form" onsubmit="event.preventDefault();">
+              <label class="target-input-label" for="target-input">
+                <i class="fa-solid fa-crosshairs"></i> Enter Target
+              </label>
+              <div class="target-input-row">
+                <div class="target-input-wrapper">
+                  <i class="fa-solid fa-globe input-target-icon"></i>
+                  <input 
+                    type="text" 
+                    id="target-input" 
+                    class="target-input-field" 
+                    placeholder="Enter a domain or IP address (e.g., example.com)" 
+                    autocomplete="off"
+                    spellcheck="false"
+                  >
+                </div>
+                <button type="button" class="btn btn-primary-glow btn-scan-action" id="btn-start-scan">
+                  <i class="fa-solid fa-play"></i> Start Scan
+                </button>
+              </div>
+              <div id="target-validation-msg" class="validation-message hidden"></div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Scanning State Indicator -->
+        <div id="target-scanning-state" class="card mb-24 hidden">
+          <div class="card-body text-center p-36">
+            <div class="scanner-radar-pulse"></div>
+            <h3 class="mt-16 text-white" id="scanning-status-title">Scanning...</h3>
+            <p class="text-muted text-sm mt-8" id="scanning-status-desc">
+              Resolving host, inspecting perimeter security headers, checking SSL/TLS certificates, and evaluating vulnerabilities...
+            </p>
+          </div>
+        </div>
+
+        <!-- Initial Empty State Banner (Shown before scan) -->
+        <div id="scan-initial-state" class="card mb-24 initial-scan-banner">
+          <div class="card-body text-center p-40">
+            <div class="initial-icon-box">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h2 class="initial-title mt-16">Enter a target to begin your security scan.</h2>
+            <p class="initial-subtitle text-muted mt-8">
+              CyberDNA evaluates live domain security headers, SSL certificate integrity, perimeter exposure, and predicts potential attack pathways in real-time.
+            </p>
+          </div>
+        </div>
+
+        <!-- Scan Results Container (Revealed dynamically after scan) -->
+        <div id="scan-results-container" class="hidden">
+        <!-- Banner for Current Threat State -->
+        <div id="overview-state-banner" class="threat-status-banner low-risk-banner">
+          <div class="banner-icon-container" id="banner-icon-container">
+            <i class="fa-solid fa-shield-check"></i>
+          </div>
+          <div class="banner-content">
+            <div class="banner-headline">
+              <span class="banner-title" id="banner-title">🟢 NO SIGNIFICANT THREAT DETECTED</span>
+              <span class="badge" id="banner-risk-pill">RISK: 18/100 (LOW)</span>
+            </div>
+            <p class="banner-description" id="banner-desc">
+              Security activity appears normal based on analyzed events. No suspicious sequence detected.
+            </p>
+          </div>
+          <div class="banner-meta">
+            <div class="meta-item">
+              <span class="meta-label">Current Stage</span>
+              <span class="meta-value" id="banner-stage">Normal Activity</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Predicted Next</span>
+              <span class="meta-value" id="banner-predicted">None (Baseline)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric KPI Cards Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card" id="kpi-total-events-card">
+            <div class="kpi-icon-box cyan">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">Total Security Events</span>
+              <span class="kpi-value" id="kpi-total-events">0</span>
+              <span class="kpi-subtext" id="kpi-source-subtext">Source: None</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-threats-card">
+            <div class="kpi-icon-box amber">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">Threats Detected</span>
+              <span class="kpi-value" id="kpi-threats-count">0</span>
+              <span class="kpi-subtext" id="kpi-threats-subtext">Suspicious sequences</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-alerts-card">
+            <div class="kpi-icon-box red">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">Critical Alerts</span>
+              <span class="kpi-value" id="kpi-critical-alerts">0</span>
+              <span class="kpi-subtext">High priority incidents</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-users-card">
+            <div class="kpi-icon-box purple">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">High-Risk Users</span>
+              <span class="kpi-value" id="kpi-high-risk-users">0</span>
+              <span class="kpi-subtext" id="kpi-primary-user">Principal: None</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-devices-card">
+            <div class="kpi-icon-box blue">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">High-Risk Devices</span>
+              <span class="kpi-value" id="kpi-high-risk-devices">0</span>
+              <span class="kpi-subtext" id="kpi-primary-device">Target: None</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" id="kpi-risk-card">
+            <div class="kpi-icon-box gradient-risk">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+            <div class="kpi-info">
+              <span class="kpi-label">Average Risk Score</span>
+              <div class="risk-score-display">
+                <span class="kpi-value highlight-cyan" id="kpi-risk-score">0</span>
+                <span class="risk-max">/ 100</span>
+              </div>
+              <span class="badge badge-low" id="kpi-risk-badge">LOW</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attack Path Progression Tracker (Inline Preview) -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-diagram-project"></i>
+              <span>Active Kill-Chain Stage Tracker</span>
+            </div>
+            <button class="btn btn-sm btn-outline" id="btn-goto-predictions-from-overview">
+              View Detailed Prediction <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="killchain-tracker" id="overview-killchain-tracker">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid 1: Events Timeline & Severity -->
+        <div class="charts-grid-2col mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Security Events Timeline</span>
+              </div>
+              <span class="card-badge">Chronological</span>
+            </div>
+            <div class="card-body chart-container-wrapper">
+              <canvas id="chart-events-timeline"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Threat Severity Distribution</span>
+              </div>
+              <span class="card-badge">Categorical</span>
+            </div>
+            <div class="card-body chart-container-wrapper">
+              <canvas id="chart-severity-dist"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid 2: Attack Stages & Risk Trend -->
+        <div class="charts-grid-2col mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Attack Stage Distribution</span>
+              </div>
+              <span class="card-badge">MITRE ATT&CK</span>
+            </div>
+            <div class="card-body chart-container-wrapper">
+              <canvas id="chart-stage-dist"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-area"></i>
+                <span>Risk Score Progression Trend</span>
+              </div>
+              <span class="card-badge">Predictive Curve</span>
+            </div>
+            <div class="card-body chart-container-wrapper">
+              <canvas id="chart-risk-trend"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Alerts Quick Strip -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-bell-exclamation"></i>
+              <span>Recent Security Alerts</span>
+            </div>
+            <button class="btn btn-sm btn-outline" id="btn-goto-alerts-from-overview">
+              View All Alerts <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="soc-table" id="overview-recent-alerts-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Source IP</th>
+                    <th>Severity</th>
+                    <th>Current Stage</th>
+                    <th>Possible Next Stage</th>
+                    <th>Risk Score</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-alerts-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        </div> <!-- /#scan-results-container -->
+      </section>
+
+      <!-- ==============================================
+           2. LOG ANALYSIS SECTION
+           ============================================== -->
+      <section id="section-analysis" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Live Security Telemetry</h1>
+            <p class="page-subtitle">Real-time perimeter event stream and security telemetry captured directly from target scans.</p>
+          </div>
+        </div>
+
+        <!-- Live Target Telemetry Status Header -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-tower-broadcast highlight-cyan"></i>
+              <span>Live Target Telemetry Engine</span>
+            </div>
+            <span class="card-badge" id="telemetry-stream-badge">Direct Live Stream</span>
+          </div>
+          <div class="card-body">
+            <p class="text-muted text-sm">
+              All events below represent real-time network probes, DNS records, TLS handshake inspections, and HTTP header evaluations performed directly against your entered target. No dummy data or simulated logs are used.
+            </p>
+          </div>
+        </div>
+
+        <!-- Post-Analysis Results Summary Ribbon -->
+        <div id="analysis-results-ribbon" class="card mb-24">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-square-poll-vertical"></i>
+              <span>Analysis Summary Results</span>
+            </div>
+            <span class="badge" id="results-risk-level-badge">LEVEL: UNKNOWN</span>
+          </div>
+          <div class="card-body">
+            <div class="analysis-stats-strip">
+              <div class="stat-pill">
+                <span class="stat-pill-label">Events Analyzed</span>
+                <span class="stat-pill-value" id="res-events-count">0</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Suspicious Events</span>
+                <span class="stat-pill-value text-amber" id="res-suspicious-count">0</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Users Involved</span>
+                <span class="stat-pill-value" id="res-users-count">0</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Devices Involved</span>
+                <span class="stat-pill-value" id="res-devices-count">0</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Calculated Risk</span>
+                <span class="stat-pill-value highlight-cyan" id="res-risk-score">0 / 100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Event Table with Search and Filters -->
+        <div class="card">
+          <div class="card-header flex-wrap">
+            <div class="card-title">
+              <i class="fa-solid fa-table-list"></i>
+              <span>Parsed Security Event Stream</span>
+            </div>
+            
+            <!-- Filters Toolbar -->
+            <div class="filter-toolbar">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="event-search-input" placeholder="Search user, IP, resource, event...">
+              </div>
+
+              <select class="filter-select" id="filter-severity-select">
+                <option value="all">All Severities</option>
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+
+              <select class="filter-select" id="filter-status-select">
+                <option value="all">All Statuses</option>
+                <option value="Success">Success</option>
+                <option value="Failed">Failed</option>
+                <option value="Requested">Requested</option>
+              </select>
+
+              <select class="filter-select" id="filter-stage-select">
+                <option value="all">All Attack Stages</option>
+                <option value="Initial Access">Initial Access</option>
+                <option value="Credential Access">Credential Access</option>
+                <option value="Discovery">Discovery</option>
+                <option value="Lateral Movement">Lateral Movement</option>
+                <option value="Privilege Escalation">Privilege Escalation</option>
+                <option value="Data Access">Data Access</option>
+                <option value="Routine Activity">Routine Activity</option>
+              </select>
+
+              <button class="btn btn-sm btn-outline" id="btn-clear-filters">
+                <i class="fa-solid fa-filter-circle-xmark"></i> Clear Filters
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="soc-table sortable-table" id="security-events-table">
+                <thead>
+                  <tr>
+                    <th data-sort="id"># <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="timestamp">Timestamp <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="user">User <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="source_ip">Source IP <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="destination_ip">Destination <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="event_type">Event Type <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="severity">Severity <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="resource">Resource <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="status">Status <i class="fa-solid fa-sort"></i></th>
+                    <th data-sort="attack_stage">Attack Stage <i class="fa-solid fa-sort"></i></th>
+                  </tr>
+                </thead>
+                <tbody id="security-events-tbody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==============================================
+           3. ATTACK PATTERNS SECTION
+           ============================================== -->
+      <section id="section-patterns" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Behavioral Pattern Detection</h1>
+            <p class="page-subtitle">Sequential behavioral fingerprinting uncovering coordinated multi-step cyber intrusions.</p>
+          </div>
+        </div>
+
+        <!-- Pattern Banner Card -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-dna"></i>
+              <span>ATTACK PATTERN DETECTED</span>
+            </div>
+            <span class="card-badge" id="patterns-status-pill">Sequence Fingerprint</span>
+          </div>
+          <div class="card-body">
+            <div class="fingerprint-display-container">
+              <label class="pattern-label">Behavioral Sequence Fingerprint:</label>
+              <div class="fingerprint-nodes-flow" id="fingerprint-nodes-container">
+                <!-- Dynamically generated connected flow nodes -->
+              </div>
+            </div>
+
+            <div class="detected-sequences-wrapper mt-24">
+              <h4 class="subheading mb-12"><i class="fa-solid fa-shield-virus"></i> Recognized Attack Sequences</h4>
+              <div class="pattern-cards-grid" id="pattern-signatures-grid">
+                <!-- Dynamically inserted signature cards -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Behavioral Sequence Indicators Grid -->
+        <div class="grid-2col mb-24">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Sequence Behavioral Indicators</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="indicators-list" id="behavioral-indicators-list">
+                <!-- Dynamic indicators -->
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span>Event Type Distribution</span>
+              </div>
+            </div>
+            <div class="card-body chart-container-wrapper">
+              <canvas id="chart-event-types"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           4. PREDICTIONS SECTION
+           ============================================== -->
+      <section id="section-predictions" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Attack-Stage Detection & Next-Stage Prediction</h1>
+            <p class="page-subtitle">Markov state transition forecast with explainable AI justifications.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Attack Path Progression Visualizer -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-route"></i>
+              <span>Attack Path Progression & Forecasting</span>
+            </div>
+            <span class="card-badge">MITRE ATT&CK Mapping</span>
+          </div>
+          <div class="card-body">
+            <p class="text-sm text-muted mb-20">
+              Interactive progression showing historical stages traversed, current operational stage, and forecasted next stage.
+            </p>
+            
+            <div class="attack-path-flow" id="attack-path-flow">
+              <!-- Dynamically populated attack stages nodes -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Prediction Metrics & Confidence 2-Col Card -->
+        <div class="grid-2col mb-24">
+          <!-- Current vs Next Stage Card -->
+          <div class="card card-glow-cyan">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-crosshairs"></i>
+                <span>Early-Warning Stage Forecast</span>
+              </div>
+              <span class="badge badge-cyan">Probabilistic Model</span>
+            </div>
+            <div class="card-body">
+              <div class="prediction-duo">
+                <div class="prediction-box">
+                  <span class="p-label">CURRENT ATTACK STAGE</span>
+                  <span class="p-value highlight-red" id="pred-current-stage">Lateral Movement</span>
+                  <span class="p-sub" id="pred-current-desc">Active frontline observed</span>
+                </div>
+
+                <div class="prediction-divider">
+                  <i class="fa-solid fa-arrow-right-long divider-arrow"></i>
+                </div>
+
+                <div class="prediction-box">
+                  <span class="p-label">POSSIBLE NEXT STAGE</span>
+                  <span class="p-value highlight-purple" id="pred-next-stage">Privilege Escalation</span>
+                  <span class="p-sub" id="pred-next-desc">High probability transition</span>
+                </div>
+              </div>
+
+              <!-- Confidence Progress Bar -->
+              <div class="confidence-container mt-24">
+                <div class="confidence-header">
+                  <span class="confidence-title">PREDICTION CONFIDENCE:</span>
+                  <span class="confidence-val" id="pred-confidence-val">87%</span>
+                </div>
+                <div class="confidence-bar-track">
+                  <div class="confidence-bar-fill" id="pred-confidence-bar" style="width: 87%;"></div>
+                </div>
+              </div>
+
+              <!-- Top Possible Alternatives Table -->
+              <div class="alternatives-box mt-20">
+                <span class="alt-title"><i class="fa-solid fa-ranking-star"></i> Top Possible Alternative Stages:</span>
+                <div class="alternatives-list" id="pred-alternatives-list">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <div class="disclaimer-callout mt-16">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Predictions indicate statistically probable trajectories based on event progression and do not guarantee future attack execution.</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Explainable AI: WHY THIS ALERT? -->
+          <div class="card card-glow-amber">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span>Explainable AI: "WHY THIS ALERT?"</span>
+              </div>
+              <span class="badge badge-amber">Evidence-Backed</span>
+            </div>
+            <div class="card-body">
+              <p class="text-sm text-muted mb-16">
+                All bullet points are transparently derived from observed security events in the active session:
+              </p>
+              
+              <ul class="why-alert-list" id="why-alert-list">
+                <!-- Dynamically populated with checkmarks -->
+              </ul>
+
+              <div class="risk-breakdown-subcard mt-24">
+                <h5 class="subcard-title"><i class="fa-solid fa-shield-halved"></i> Recommended Defensive Actions</h5>
+                <ul class="defensive-actions-list" id="defensive-actions-list">
+                  <!-- Populated dynamically -->
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-Click Defensive Remediation & Honeypot Playbook Card -->
+        <div class="card card-glow-cyan mb-24" id="remediation-playbook-card">
+          <div class="card-header flex-wrap">
+            <div class="card-title">
+              <i class="fa-solid fa-shield-virus highlight-cyan"></i>
+              <span>1-Click Defensive Hardening & Honeypot Playbook</span>
+            </div>
+            <div class="header-badges-row">
+              <span class="badge badge-cyan" id="remediation-canary-badge"><i class="fa-solid fa-spider"></i> Decoy Trap Active</span>
+              <span class="card-badge">Autonomous Defense</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="text-sm text-muted mb-16">
+              Tailored server hardening scripts generated dynamically from perimeter audit findings. Suppresses server banners, enforces strict HSTS & CSP headers, blocks unauthorized git/env access, and injects active honeypot decoy canaries to trap automated crawlers.
+            </p>
+
+            <!-- Server Selector Tabs & Action Buttons -->
+            <div class="remediation-toolbar mb-16">
+              <div class="server-tabs-group" id="remediation-server-tabs">
+                <button type="button" class="server-tab-btn active" data-server="nginx">
+                  <i class="fa-brands fa-linux"></i> Nginx Config
+                </button>
+                <button type="button" class="server-tab-btn" data-server="apache">
+                  <i class="fa-solid fa-server"></i> Apache (.htaccess)
+                </button>
+                <button type="button" class="server-tab-btn" data-server="cloudflare">
+                  <i class="fa-brands fa-cloudflare"></i> Cloudflare Edge
+                </button>
+                <button type="button" class="server-tab-btn" data-server="honeypot">
+                  <i class="fa-solid fa-spider"></i> Honeypot Decoy
+                </button>
+              </div>
+
+              <div class="remediation-actions-group">
+                <button type="button" class="btn btn-sm btn-cyan" id="btn-copy-remediation">
+                  <i class="fa-solid fa-copy"></i> <span id="copy-btn-text">Copy to Clipboard</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline" id="btn-download-remediation">
+                  <i class="fa-solid fa-download"></i> Download File
+                </button>
+              </div>
+            </div>
+
+            <!-- Server File Hint & Target Details -->
+            <div class="remediation-meta-strip mb-12">
+              <div class="remediation-meta-left">
+                <span class="meta-icon"><i class="fa-solid fa-file-code highlight-cyan"></i></span>
+                <span class="meta-label" id="remediation-file-title">Nginx Web Server Hardening:</span>
+                <code class="meta-filename" id="remediation-file-name">nginx_hardening.conf</code>
+              </div>
+              <div class="remediation-meta-right">
+                <span class="meta-hint-text" id="remediation-file-hint">Apply inside server { ... } block</span>
+              </div>
+            </div>
+
+            <!-- Code Preview Box -->
+            <div class="remediation-code-container">
+              <pre class="remediation-code-pre" id="remediation-code-pre"><code id="remediation-code-content"># Loading defensive playbook...</code></pre>
+            </div>
+
+            <!-- Deception & Canary Explanation Callout -->
+            <div class="canary-callout-box mt-16" id="remediation-canary-info">
+              <div class="canary-icon-col">
+                <i class="fa-solid fa-tower-broadcast"></i>
+              </div>
+              <div class="canary-text-col">
+                <div class="canary-title">Active Honeypot Decoy Canary: <code class="canary-token-code" id="remediation-canary-token">canary-trap-active</code></div>
+                <div class="canary-desc">Injected as <code>X-Debug-Canary-Gateway</code>. Probing scanners or attackers searching for private debug endpoints will trigger instant SIEM alerts and perimeter quarantine.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==============================================
+           5. ALERTS SECTION
+           ============================================== -->
+      <section id="section-alerts" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Smart Security Alerts</h1>
+            <p class="page-subtitle">Prioritized early-warning notifications categorized by severity and risk contribution.</p>
+          </div>
+          <div class="hero-actions">
+            <!-- Alert Severity Filter Buttons -->
+            <div class="alert-filter-group" id="alert-filter-buttons">
+              <button class="btn btn-sm btn-filter active" data-severity="all">All</button>
+              <button class="btn btn-sm btn-filter" data-severity="Critical">Critical</button>
+              <button class="btn btn-sm btn-filter" data-severity="High">High</button>
+              <button class="btn btn-sm btn-filter" data-severity="Medium">Medium</button>
+              <button class="btn btn-sm btn-filter" data-severity="Low">Low</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alerts-feed-grid" id="alerts-cards-container">
+          <!-- Dynamically populated alert cards -->
+        </div>
+      </section>
+
+      <!-- ==============================================
+           6. USERS & DEVICES SECTION
+           ============================================== -->
+      <section id="section-entities" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Users & Devices Risk Assessment</h1>
+            <p class="page-subtitle">Granular behavioral exposure index calculated across all observed identities and network hosts.</p>
+          </div>
+        </div>
+
+        <div class="grid-2col mb-24">
+          <!-- Users Risk Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-user-lock"></i>
+                <span>Primary Users at Risk</span>
+              </div>
+              <span class="card-badge">Origin IP Telemetry</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="soc-table" id="users-risk-table">
+                  <thead>
+                    <tr>
+                      <th>User / Origin IP</th>
+                      <th>Active Stage</th>
+                      <th>Risk Score</th>
+                      <th>Threat Level</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-risk-tbody">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Devices Risk Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-server"></i>
+                <span>Device / Host Risk Ranking</span>
+              </div>
+              <span class="card-badge">Asset Telemetry</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="soc-table" id="devices-risk-table">
+                  <thead>
+                    <tr>
+                      <th>Target Host / Resolved IP</th>
+                      <th>Risk Score</th>
+                      <th>Risk Level</th>
+                      <th>Total Events</th>
+                      <th>Suspicious</th>
+                    </tr>
+                  </thead>
+                  <tbody id="devices-risk-tbody">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity Activity Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-chart-column"></i>
+              <span>Entity Risk Comparison (Users & Devices)</span>
+            </div>
+          </div>
+          <div class="card-body chart-container-wrapper">
+            <canvas id="chart-entities-risk"></canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==============================================
+           7. REPORTS SECTION
+           ============================================== -->
+      <section id="section-reports" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Security Reports & Compliance</h1>
+            <p class="page-subtitle">Generate, inspect, and export comprehensive defensive security audit reports.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn btn-outline" id="btn-print-report">
+              <i class="fa-solid fa-print"></i> Print / PDF
+            </button>
+            <button class="btn btn-cyan" id="btn-download-report-json">
+              <i class="fa-solid fa-download"></i> Export JSON
+            </button>
+            <button class="btn btn-primary-glow" id="btn-download-report-md">
+              <i class="fa-solid fa-file-arrow-down"></i> Download Report (MD)
+            </button>
+          </div>
+        </div>
+
+        <!-- Printable / Viewable Report Document Container -->
+        <div class="card mb-24 report-preview-card" id="printable-report-area">
+          <div class="report-header-banner">
+            <div class="report-brand">
+              <i class="fa-solid fa-dna brand-icon"></i>
+              <div>
+                <h2>CYBERDNA DEFENSIVE SECURITY ASSESSMENT REPORT</h2>
+                <p>AI-Powered Predictive Cyberattack Early-Warning System</p>
+              </div>
+            </div>
+            <div class="report-meta-tag">
+              <span class="tag-title">REPORT ID:</span>
+              <span class="tag-val" id="rep-analysis-id">CDNA-PENDING</span>
+              <span class="tag-date" id="rep-timestamp">2026-10-08</span>
+            </div>
+          </div>
+
+          <div class="card-body report-document-body">
+            <!-- Executive Summary -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-clipboard-check"></i> 1. Executive Summary</h3>
+              <div class="rep-summary-grid">
+                <div class="rep-item">
+                  <span class="r-label">Target Source:</span>
+                  <span class="r-value" id="rep-source-name">Sample Dataset</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Composite Risk:</span>
+                  <span class="r-value highlight-cyan" id="rep-risk-score">87 / 100 (HIGH)</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Events Audited:</span>
+                  <span class="r-value" id="rep-total-events">5</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Threats Detected:</span>
+                  <span class="r-value text-amber" id="rep-suspicious-count">4</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Current Stage:</span>
+                  <span class="r-value text-red" id="rep-current-stage">Lateral Movement</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Forecasted Next:</span>
+                  <span class="r-value text-purple" id="rep-predicted-stage">Privilege Escalation</span>
+                </div>
+                <div class="rep-item">
+                  <span class="r-label">Prediction Confidence:</span>
+                  <span class="r-value" id="rep-confidence">87%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Behavioral Fingerprint -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-fingerprint"></i> 2. Behavioral Sequence Fingerprint</h3>
+              <div class="rep-code-box" id="rep-fingerprint-box">
+                Failed Login → Successful Login → Sensitive File Access → Network Connection → Privilege Request
+              </div>
+            </div>
+
+            <!-- Why This Alert -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-circle-question"></i> 3. Evidence Matrix ("Why This Alert?")</h3>
+              <ul class="rep-evidence-list" id="rep-evidence-list">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Entity Breakdown -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-users"></i> 4. Entity Exposure Breakdown</h3>
+              <div class="rep-entities-columns">
+                <div>
+                  <h4>Primary Users at Risk (Origin IP)</h4>
+                  <ul class="rep-entity-list" id="rep-users-list"></ul>
+                </div>
+                <div>
+                  <h4>Primary Devices at Risk (Target Host)</h4>
+                  <ul class="rep-entity-list" id="rep-devices-list"></ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Defensive Actions -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-shield"></i> 5. Recommended Defensive Remediations (Non-Destructive)</h3>
+              <ul class="rep-actions-list" id="rep-actions-list">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+            <!-- Defensive Remediation & Honeypot Playbook in Report -->
+            <div class="report-section-block">
+              <h3 class="rep-heading"><i class="fa-solid fa-shield-virus"></i> 6. 1-Click Defensive Hardening & Deception Playbook</h3>
+              <div class="rep-remediation-summary mb-12">
+                <p class="text-sm text-muted">Active Deception Canary Token: <strong class="highlight-cyan" id="rep-canary-token">canary-trap-active</strong> (Header: <code>X-Debug-Canary-Gateway</code>)</p>
+              </div>
+              <div class="rep-code-box" id="rep-remediation-snippet" style="max-height: 220px; overflow-y: auto; white-space: pre; font-family: var(--font-mono); font-size: 11px; line-height: 1.45;">
+                # Server hardening configuration generated autonomously by CyberDNA
+              </div>
+            </div>
+
+            <div class="report-footer-note">
+              <p>CONFIDENTIAL & DEFENSIVE USE ONLY. Generated autonomously by CyberDNA Early-Warning Engine.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           8. ANALYSIS HISTORY SECTION
+           ============================================== -->
+      <section id="section-history" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">Analysis History</h1>
+            <p class="page-subtitle">Persistent SQLite database repository of previous telemetry audits and predictions.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn btn-outline" id="btn-refresh-history">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh History
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-database"></i>
+              <span>Saved Analysis Sessions</span>
+            </div>
+            <span class="card-badge" id="history-count-badge">0 Runs</span>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="soc-table" id="history-table">
+                <thead>
+                  <tr>
+                    <th>Analysis ID</th>
+                    <th>Date & Time</th>
+                    <th>Source File</th>
+                    <th>Total Events</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Current Stage</th>
+                    <th>Predicted Next</th>
+                    <th>Confidence</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="history-tbody">
+                  <!-- Dynamically populated from SQLite -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           9. SETTINGS SECTION
+           ============================================== -->
+      <section id="section-settings" class="content-section">
+        <div class="section-hero">
+          <div class="hero-titles">
+            <h1 class="page-title">System Settings & Reference</h1>
+            <p class="page-subtitle">Configure thresholds, review system architecture, and reset analysis history.</p>
+          </div>
+        </div>
+
+        <div class="grid-2col mb-24">
+          <!-- Configuration Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Risk Scoring Thresholds</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Low Risk Threshold</span>
+                  <span class="setting-sub">Events scoring 0-30 categorized as Normal/Low</span>
+                </div>
+                <span class="badge badge-low">0 - 30</span>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Medium Risk Threshold</span>
+                  <span class="setting-sub">Events scoring 31-60 categorized as Medium</span>
+                </div>
+                <span class="badge badge-medium">31 - 60</span>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">High Risk Threshold</span>
+                  <span class="setting-sub">Events scoring 61-80 categorized as High Alert</span>
+                </div>
+                <span class="badge badge-high">61 - 80</span>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-name">Critical Risk Threshold</span>
+                  <span class="setting-sub">Events scoring 81-100 trigger Critical Alerts</span>
+                </div>
+                <span class="badge badge-critical">81 - 100</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scanner Telemetry Specifications Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>Scanner Telemetry Specifications</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="text-sm text-muted mb-12">
+                CyberDNA assesses target perimeter security across 5 live telemetry stages:
+              </p>
+              <div class="schema-tags-grid">
+                <span class="schema-tag">DNS Host Resolution</span>
+                <span class="schema-tag">Perimeter Port Probe</span>
+                <span class="schema-tag">SSL/TLS Inspection</span>
+                <span class="schema-tag">HTTP Security Headers</span>
+                <span class="schema-tag">Posture Vulnerability Analysis</span>
+              </div>
+              <p class="text-xs text-muted mt-16">
+                Live scans inspect: <code>HSTS, CSP, X-Frame-Options, X-Content-Type, Referrer-Policy, Permissions-Policy</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone: Reset Database -->
+        <div class="card border-red">
+          <div class="card-header">
+            <div class="card-title text-red">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>Database Administration</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="flex-between">
+              <div>
+                <h4>Reset Analysis History & Alerts</h4>
+                <p class="text-sm text-muted">Permanently clears historical analysis records and generated alerts from SQLite.</p>
+              </div>
+              <button class="btn btn-danger" id="btn-reset-database">
+                <i class="fa-solid fa-trash-can"></i> Reset Database
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Alert Detail Modal -->
+  <div class="modal-overlay hidden" id="alert-detail-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-alert-title"><i class="fa-solid fa-triangle-exclamation"></i> Alert Details</h3>
+        <button class="modal-close-btn" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="modal-alert-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>

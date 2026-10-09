@@ -1,0 +1,5 @@
+timestamp,user,source_ip,destination_ip,event_type,severity,resource,status
+2026-10-08 10:01:00,Rahul,PC-01,SERVER-01,Failed Login,Medium,Authentication,Failed
+2026-10-08 10:03:00,Rahul,PC-01,SERVER-01,Successful Login,High,Authentication,Success
+2026-10-08 10:05:00,Rahul,PC-01,SERVER-01,Sensitive File Access,High,Confidential File,Success
+2026-10-08 10:07:00,Rahul,PC-01,SERVER-02,Network Connection,High,Internal Server,Success

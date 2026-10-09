@@ -1,0 +1,9 @@
+timestamp,user,source_ip,destination_ip,event_type,severity,resource,status
+2026-10-08 09:00:15,Priya,192.168.1.15,AUTH-GATEWAY,User Login,Low,Corporate Portal,Success
+2026-10-08 09:05:22,Amit,192.168.1.18,MAIL-SRV,Email Sync,Low,Exchange Server,Success
+2026-10-08 09:12:40,Priya,192.168.1.15,FILE-SRV,Document Read,Low,Public Knowledgebase,Success
+2026-10-08 09:20:10,Vikram,192.168.1.25,AUTH-GATEWAY,User Login,Low,Corporate Portal,Success
+2026-10-08 09:35:05,Amit,192.168.1.18,INTRANET,HTTP GET,Low,Employee Directory,Success
+2026-10-08 09:50:33,Vikram,192.168.1.25,BACKUP-01,Scheduled Sync,Low,Routine Backup Store,Success
+2026-10-08 10:00:00,Priya,192.168.1.15,PRINT-SRV,Print Job Spool,Low,Office Printer HP-4,Success
+2026-10-08 10:15:20,Amit,192.168.1.18,CHAT-SRV,Session Ping,Low,Internal Messaging,Success

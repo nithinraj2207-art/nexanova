@@ -1,0 +1,10 @@
+timestamp,user,source_ip,destination_ip,event_type,severity,resource,status
+2026-10-08 14:00:10,External_User,203.0.113.45,DMZ-PROXY,External Connection,Medium,Public Web Service,Success
+2026-10-08 14:02:15,service_acc,192.168.1.55,AUTH-GATEWAY,Failed Login,Medium,Active Directory,Failed
+2026-10-08 14:02:30,service_acc,192.168.1.55,AUTH-GATEWAY,Failed Login,Medium,Active Directory,Failed
+2026-10-08 14:03:00,service_acc,192.168.1.55,AUTH-GATEWAY,Successful Login,High,Active Directory,Success
+2026-10-08 14:06:22,service_acc,192.168.1.55,NET-MON,Network Scan,High,Internal Subnet 192.168.1.0/24,Success
+2026-10-08 14:09:40,service_acc,192.168.1.55,FINANCE-SRV,Network Connection,High,Internal Server Port 445,Success
+2026-10-08 14:12:10,service_acc,192.168.1.55,FINANCE-SRV,Privilege Request,Critical,Administrator Access Sudo,Requested
+2026-10-08 14:15:35,service_acc,192.168.1.55,FINANCE-SRV,Sensitive File Access,Critical,Confidential Payroll Database,Success
+2026-10-08 14:18:50,service_acc,192.168.1.55,EXT-IP-99,Data Exfiltration,Critical,Bulk File Transfer 4.2GB,Success
